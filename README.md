@@ -1,5 +1,13 @@
 # repo-office
 
+> **보관한 저장소다(2026-11-27).** 이 파이프라인은 더 쓰지 않고, 고치지도 않는다. 과제 55개는 모두 끝났고 열린 Issue·PR은 없다.
+>
+> 보관하는 까닭: [repo-baseline](https://github.com/minjunkim-labs/repo-baseline) v2가 같은 일을 엔진 없이 한다. 소비 레포가 모두 v2로 옮겨서([repo-baseline#175](https://github.com/minjunkim-labs/repo-baseline/issues/175)) 이 엔진이 기대던 v1 규칙도 없어졌다.
+>
+> 대신 쓰는 것: 티켓마다 Claude Code 세션 하나(로컬 worktree나 클라우드 세션, Claude 프로젝트의 스레드)가 구현하고, 다른 세션이 `prompts/review.md`로 리뷰한다. 쉬움 PR은 `enqueue`로 머지 큐에 넣는다. 절차는 repo-baseline의 [WORKFLOW.md](https://github.com/minjunkim-labs/repo-baseline/blob/main/WORKFLOW.md)와 [POLICY.md](https://github.com/minjunkim-labs/repo-baseline/blob/main/POLICY.md)에 있다.
+>
+> 아래는 보관할 때의 설명이다.
+
 repo-office는 이슈나 개발 요청 하나를 PR까지 만드는 실험 파이프라인이다. PR은 리뷰까지 마친 상태로 나온다. 사람은 되돌리기 어려움인 설계를 승인하고 그 PR을 병합하기만 한다. 쉬움 설계와 쉬움 PR은 엔진이 승인하고 머지 큐에 넣는다.
 
 나머지는 두 가지가 돌린다. leader는 사람과 말하고 과제를 등록하는 Claude Code 세션이다(`leader/`). 늘 떠 있는 세션은 leader 하나뿐이다. 엔진(`pipeline/engine.py`)은 설계·구현·리뷰 같은 단계마다 Claude Code를 띄우고, 단계가 끝나면 닫는다. 이렇게 단계마다 띄우는 Claude Code를 작업자라고 부른다. 구현 작업자는 설계 작업자의 세션을 이어받아 설계 맥락을 잇는다. 리뷰 작업자는 다른 세션이다.
